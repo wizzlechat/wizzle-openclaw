@@ -1,0 +1,38 @@
+{
+  "name": "wizzle-openclaw",
+  "version": "0.0.0",
+  "description": "Chat with your OpenClaw agents in the Wizzle app, end to end encrypted through the Wizzle relay",
+  "type": "module",
+  "files": ["dist", "openclaw.plugin.json", "README.md"],
+  "peerDependencies": {
+    "openclaw": ">=2026.10.9"
+  },
+  "peerDependenciesMeta": {
+    "openclaw": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=24.22.1"
+  },
+  "openclaw": {
+    "extensions": ["./dist/wizzle-openclaw/src/index.js"],
+    "compat": {
+      "pluginApi": ">=2026.10.9",
+      "minGatewayVersion": "2026.10.9"
+    },
+    "build": {
+      "openclawVersion": "2026.10.9",
+      "pluginSdkVersion": "2026.10.9"
+    },
+    "channel": {
+      "id": "wizzle",
+      "label": "Wizzle",
+      "selectionLabel": "Wizzle (app)",
+      "docsPath": "/channels/wizzle",
+      "docsLabel": "wizzle",
+      "blurb": "The Wizzle app, end to end encrypted through the Wizzle relay.",
+      "order": 90
+    }
+  }
+}

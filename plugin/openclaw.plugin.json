@@ -1,0 +1,43 @@
+{
+  "id": "wizzle",
+  "name": "Wizzle",
+  "description": "Chat with your OpenClaw agents in the Wizzle app, end to end encrypted through the Wizzle relay",
+  "categories": ["channels"],
+  "channels": ["wizzle"],
+  "activation": {
+    "onStartup": true,
+    "onCommands": ["wizzle"]
+  },
+  "cliCommands": [
+    {
+      "name": "wizzle",
+      "description": "Pair the Wizzle app with this OpenClaw install",
+      "hasSubcommands": true
+    }
+  ],
+  "commandAliases": [{ "name": "wizzle" }],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  },
+  "channelConfigs": {
+    "wizzle": {
+      "label": "Wizzle",
+      "description": "The Wizzle app, end to end encrypted through the Wizzle relay",
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "enabled": { "type": "boolean" },
+          "relayUrl": { "type": "string" },
+          "inviteTtlMinutes": { "type": "integer", "minimum": 1, "maximum": 1440 }
+        }
+      },
+      "uiHints": {
+        "relayUrl": { "label": "Relay URL", "help": "wss:// URL of the Wizzle relay; ws:// only for a relay on this machine" },
+        "inviteTtlMinutes": { "label": "Pairing code lifetime (minutes)" }
+      }
+    }
+  }
+}
