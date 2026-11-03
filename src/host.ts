@@ -1,7 +1,9 @@
 // The OpenClaw side of the bridge: agents from config, turns through the channel inbound runtime, history from transcripts.
 import { randomUUID } from 'node:crypto';
+import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { listAgentIds, resolveAgentConfig } from 'openclaw/plugin-sdk/agent-scope-runtime';
 import type { ChannelGatewayContext } from 'openclaw/plugin-sdk/channel-contract';
@@ -64,9 +66,25 @@ function errorText(err: unknown): string {
   return err instanceof Error ? err.message : String(err);
 }
 
+// The plugin's own package.json: above dist in the installed package, at the repo root from source.
+function pluginVersion(): string {
+  let dir = path.dirname(fileURLToPath(import.meta.url));
+  for (let up = 0; up < 4; up += 1) {
+    try {
+      const pkg = JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf8')) as { name?: unknown; version?: unknown };
+      if (pkg.name === 'wizzle-openclaw' && typeof pkg.version === 'string') return pkg.version;
+    } catch {
+      // Not at this level.
+    }
+    dir = path.dirname(dir);
+  }
+  return 'unknown';
+}
+
 export class OpenClawHost implements BridgeHost {
   readonly runtime = 'openclaw';
   readonly runtimeVersion: string;
+  readonly bridgeVersion = pluginVersion();
   readonly hostName = os.hostname();
   private readonly deps: HostDeps;
   private readonly turns = new Map<string, Turn>();
